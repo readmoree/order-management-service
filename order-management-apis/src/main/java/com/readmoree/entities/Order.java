@@ -25,7 +25,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class Order{
 	
-	//orderid--> randome generation
+	//orderid--> random generation
 	@Id
 	private String orderId;
 	

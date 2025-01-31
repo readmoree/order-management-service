@@ -17,7 +17,6 @@ public class OrderDto {
 	private Long bookId;
 	private Integer quantity;
 	private Double price;
-	
 	private String orderId;
 	private Long paymentId;
 	private Long trackingId;

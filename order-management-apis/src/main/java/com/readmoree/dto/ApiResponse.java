@@ -16,7 +16,6 @@ public class ApiResponse {
 	
 	private LocalDateTime timeStamp;
 	private String message;
-//	private OrderDetailsDto orderDetails;
 	private List<OrderDetailsDto> orderDetailsDtos=new ArrayList<OrderDetailsDto>(); 
 	
 //	public ApiResponse(String message, OrderDetailsDto orderDetails) {

@@ -16,6 +16,7 @@ import com.readmoree.dto.OrderDetailsDto;
 import com.readmoree.service.OrderDetailsService;
 import com.readmoree.service.OrderService;
 
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
 @RestController
@@ -29,7 +30,7 @@ public class OrderController {
 	
 	//place order: many books
 	@PostMapping("/place/{userId}")
-	public ResponseEntity<?> placeOrder(@PathVariable Long userId, @RequestParam Long addressId, @RequestBody List<OrderDetailsDto> orderDetailsDtoList){
+	public ResponseEntity<?> placeOrder(@PathVariable Long userId, @RequestParam Long addressId, @Valid @RequestBody List<OrderDetailsDto> orderDetailsDtoList){
 		return ResponseEntity.ok(orderDetailsService.createOrder(userId, addressId, orderDetailsDtoList));
 	}
 	
