@@ -5,6 +5,8 @@ import java.time.LocalDateTime;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -24,7 +26,6 @@ import lombok.Setter;
 @NoArgsConstructor
 public class OrderDetails {
 	
-	//orderDetails id
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -32,15 +33,11 @@ public class OrderDetails {
 	//orderId: ManyToOne: Many books can belong to one order
 	@ManyToOne
 	@JoinColumn(name="order_id",nullable=false)
+	@JsonBackReference
 	private Order orders;
 	
-	//bookid: ManyToOne(to establish one to one)
-//	@ManyToOne
-//	@JoinColumn(name="book_id")
-//	private Book book;
 	private Long bookId;
 	
-	//quantity
 	@Column(name="quantity")
 	private Integer quantity;
 	

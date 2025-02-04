@@ -7,12 +7,17 @@ import java.util.UUID;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
+
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,57 +29,48 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class Order{
-	
-	//orderid--> random generation
+
 	@Id
 	private String orderId;
-	
-	//customerid -> api call 
-//	@ManyToOne
-//	private Customer customer;
+
 	@Column(name="customer_id")
-	private Long customerId;
-	
-	//addressid -> api call
-//	@ManyToOne
-//	private Address address;
+	private Integer customerId;
+
+
 	@Column(name="address_id")
-	private Long addresId;
-	
-	//trackingid -> api call
-//	@ManyToOne
-//	private Delivery tracking;
+	private Integer addresId;
+
 	@Column(name="tracking_id")
 	private Long trackingId;
-	
-	//paymentid -> api call
-//	@OneToOne
-//	@JoinColumn(name="payment_id")
-//	private Payment payment;
-	private Long paymentId;
-	
-	//orderDate-->createdOn from BaseEntity
+
+	@OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
+	private Payment payment;
+
+	@Column(name = "payment_id")
+	private Long paymentId; 
+
 	@CreationTimestamp
 	@Column(name="order_date")
 	private LocalDateTime orderDate;
-	
+
 	@UpdateTimestamp
 	@Column(name="updated_on")
 	private LocalDateTime updatedOn;
-	
+
 	//order total : calculated from order details
 	private Double orderTotal;
-	
+
 	//order status : enum
 	@Enumerated(EnumType.STRING)
 	@Column(name="order_status", length=20, columnDefinition = "VARCHAR(20) DEFAULT 'PENDING'")
 	private OrderStatus orderStatus;
-	
-	@OneToMany(mappedBy = "orders")
-    private List<OrderDetails> orderDetails;
-	
+
+	@OneToMany(mappedBy = "orders",cascade = CascadeType.ALL)
+	@JsonManagedReference 
+	private List<OrderDetails> orderDetails;
+
 	public static String generateOrderId() {
-	        return UUID.randomUUID().toString();  // Generates a random order ID
-	    }
+		return UUID.randomUUID().toString();  // Generates a random order ID
+	}
 
 }

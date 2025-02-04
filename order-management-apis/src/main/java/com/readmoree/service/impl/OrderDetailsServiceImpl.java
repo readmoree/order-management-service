@@ -3,17 +3,21 @@ package com.readmoree.service.impl;
 import java.util.List;
 import java.util.stream.Collectors;
 
+
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.readmoree.dao.OrderDao;
 import com.readmoree.dao.OrderDetailsDao;
+import com.readmoree.dao.PaymentDao;
 import com.readmoree.dto.ApiResponse;
 import com.readmoree.dto.OrderDetailsDto;
 import com.readmoree.entities.Order;
 import com.readmoree.entities.OrderDetails;
 import com.readmoree.entities.OrderStatus;
+import com.readmoree.entities.Payment;
+
 import com.readmoree.exceptions.ResourceNotFoundException;
 import com.readmoree.service.OrderDetailsService;
 
@@ -26,12 +30,11 @@ public class OrderDetailsServiceImpl implements OrderDetailsService {
 
 	private OrderDetailsDao orderDetailsDao;
 	private OrderDao orderDao;
+	private PaymentDao paymentDao;
 	private ModelMapper modelMapper;
+	
 	@Override
-	public ApiResponse createOrder(Long userId, Long addressId, List<OrderDetailsDto> orderDetailsDtoList) {
-
-		//userId validation
-		//addressId validation
+	public ApiResponse createOrder(Integer userId, Integer addressId,String paymentMethod, List<OrderDetailsDto> orderDetailsDtoList) {
 
 		//generate orderId
 		String OrderId = Order.generateOrderId();
@@ -42,14 +45,19 @@ public class OrderDetailsServiceImpl implements OrderDetailsService {
 
 		//order object 
 		Order order = new Order();
+		Long paymentId = Payment.generatePaymentId();
+		Payment payment = new Payment(paymentId, paymentMethod, Payment.assignPaymentStatus(paymentMethod,paymentId));
+		
+		
 		order.setOrderId(OrderId);
 		order.setCustomerId(userId);
 		order.setAddresId(addressId);
-		order.setPaymentId((long)(Math.random() * Long.MAX_VALUE));
+	
 		order.setTrackingId((long)(Math.random() * Long.MAX_VALUE));
 		order.setOrderStatus(OrderStatus.PENDING);
 		order.setOrderDetails(orderDetailsList);
-
+		
+		
 		Double orderTotal = 0.0;
 		for(OrderDetails orderDetail: orderDetailsList) {
 			orderDetail.setOrders(order);
@@ -57,8 +65,17 @@ public class OrderDetailsServiceImpl implements OrderDetailsService {
 		}
 		order.setOrderTotal(orderTotal);
 
+		payment.setOrder(order);
+		order.setPayment(payment);
+		
+		order.setPaymentId(paymentId);
+		
 		orderDao.save(order);
+		paymentDao.save(payment);
+		
 		orderDetailsList.forEach((orderDetails)->orderDetailsDao.save(orderDetails));
+		
+		
 
 		List<OrderDetailsDto> orderDetailsDtos = orderDetailsList.stream()
 				.map(orderDetail->modelMapper.map(orderDetail, OrderDetailsDto.class))
@@ -68,11 +85,8 @@ public class OrderDetailsServiceImpl implements OrderDetailsService {
 	}
 
 	@Override
-	public ApiResponse cancelOrder(Long userId, String orderId) {
-
-		//userId validation
-
-
+	public ApiResponse cancelOrder(Integer userId, String orderId) {
+		
 		//orderId validation
 		orderId = orderId.replace("\"", "").trim();
 		Order order = orderDao.findById(orderId.trim()).orElseThrow(()->new ResourceNotFoundException("invalid order id"));
@@ -92,7 +106,7 @@ public class OrderDetailsServiceImpl implements OrderDetailsService {
 	}
 
 	@Override
-	public ApiResponse returnOrder(Long userId, String orderId) {
+	public ApiResponse returnOrder(Integer userId, String orderId) {
 
 		orderId = orderId.replace("\"", "").trim();
 		Order order = orderDao.findById(orderId).orElseThrow(()->new ResourceNotFoundException("invalid order id"));
@@ -110,13 +124,11 @@ public class OrderDetailsServiceImpl implements OrderDetailsService {
 		}
 		else {
 			return new ApiResponse("Order could not be returned!");
-		}
-
-		
+		}	
 	}
 
 	@Override
-	public ApiResponse exchangeOrder(Long userId, String orderId) {
+	public ApiResponse exchangeOrder(Integer userId, String orderId) {
 
 		orderId = orderId.replace("\"", "").trim();
 		Order order = orderDao.findById(orderId).orElseThrow(()->new ResourceNotFoundException("invalid order id"));

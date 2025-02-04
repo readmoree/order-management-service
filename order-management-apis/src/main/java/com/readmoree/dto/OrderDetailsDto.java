@@ -18,4 +18,5 @@ public class OrderDetailsDto {
 
 		@NotNull(message="price can not be null")
 		private Double price;
+		
 }

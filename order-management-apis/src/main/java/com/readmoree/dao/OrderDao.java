@@ -11,10 +11,14 @@ import java.util.List;
 
 public interface OrderDao extends JpaRepository<Order, String> {
 	List<Order> findByCustomerId(Long customerId);
-	@Query("SELECT new com.readmoree.dto.OrderDto(od.bookId, od.price, od.quantity, o.orderId, o.paymentId, o.trackingId, o.orderDate, o.orderStatus, o.orderTotal) " +
-		       "FROM OrderDetails od " +
-		       "JOIN od.orders o " + 
-		       "WHERE od.orders.orderId = o.orderId " +
-		       "AND o.customerId = :customerId")
-	 List<OrderDto> findOrderDetailsByCustomer(@Param(value = "customerId") Long customerId);
+
+	@Query("SELECT new com.readmoree.dto.OrderDto( " +
+			"od.bookId, od.price, od.quantity, o.orderId, " +
+			"o.trackingId, o.orderDate, o.orderStatus, o.orderTotal, " +
+			"p.paymentId, p.paymentMethod, p.paymentStatus ) " + // Extract payment fields separately
+			"FROM OrderDetails od " +
+			"JOIN od.orders o " +
+			"LEFT JOIN o.payment p " + // Join payment table
+			"WHERE o.customerId = :customerId")
+	List<OrderDto> findOrderDetailsByCustomer(@Param("customerId") Integer customerId); 
 }

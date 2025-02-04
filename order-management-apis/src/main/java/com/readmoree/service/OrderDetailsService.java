@@ -8,15 +8,11 @@ import com.readmoree.dto.OrderDetailsDto;
 
 public interface OrderDetailsService {
 
-	ApiResponse createOrder(Long userId, Long addressId, List<OrderDetailsDto> orderDetailsDtoList);
+	ApiResponse createOrder(Integer userId, Integer addressId,String paymentMethod, List<OrderDetailsDto> orderDetailsDtoList);
 
-	ApiResponse cancelOrder(Long userId, String orderId);
+	ApiResponse cancelOrder(Integer userId, String orderId);
 
-	ApiResponse returnOrder(Long userId, String orderId);
+	ApiResponse returnOrder(Integer userId, String orderId);
 
-	ApiResponse exchangeOrder(Long userId, String orderId);
-
-//	ApiResponse createOrder(OrderRequestDto orderRequestDto);
-	
-
+	ApiResponse exchangeOrder(Integer userId, String orderId);
 }
