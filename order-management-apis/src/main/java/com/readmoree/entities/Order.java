@@ -38,7 +38,7 @@ public class Order{
 
 
 	@Column(name="address_id")
-	private Integer addresId;
+	private Integer addressId;
 
 	@Column(name="tracking_id")
 	private Long trackingId;

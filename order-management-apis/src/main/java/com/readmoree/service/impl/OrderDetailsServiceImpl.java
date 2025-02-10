@@ -45,13 +45,14 @@ public class OrderDetailsServiceImpl implements OrderDetailsService {
 
 		//order object 
 		Order order = new Order();
+		
 		Long paymentId = Payment.generatePaymentId();
 		Payment payment = new Payment(paymentId, paymentMethod, Payment.assignPaymentStatus(paymentMethod,paymentId));
 		
 		
 		order.setOrderId(OrderId);
 		order.setCustomerId(userId);
-		order.setAddresId(addressId);
+		order.setAddressId(addressId);
 	
 		order.setTrackingId((long)(Math.random() * Long.MAX_VALUE));
 		order.setOrderStatus(OrderStatus.PENDING);
@@ -73,15 +74,11 @@ public class OrderDetailsServiceImpl implements OrderDetailsService {
 		orderDao.save(order);
 		paymentDao.save(payment);
 		
-		orderDetailsList.forEach((orderDetails)->orderDetailsDao.save(orderDetails));
-		
-		
-
 		List<OrderDetailsDto> orderDetailsDtos = orderDetailsList.stream()
 				.map(orderDetail->modelMapper.map(orderDetail, OrderDetailsDto.class))
 				.collect(Collectors.toList());
 
-		return new ApiResponse("Order placed successfully!",orderDetailsDtos);
+		return new ApiResponse("Order placed successfully!",order.getOrderId(),orderDetailsDtos);
 	}
 
 	@Override

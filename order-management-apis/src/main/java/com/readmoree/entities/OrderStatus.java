@@ -12,5 +12,6 @@ public enum OrderStatus {
     FAILED,         //Payment or other issues prevented order completion.
     COMPLETED,      //Order has been completed successfully.
     ON_HOLD,        //Order is on hold due to issues like stock, payment, etc.
-    AWAITING_PAYMENT //Order is waiting for payment confirmation.
+    AWAITING_PAYMENT, //Order is waiting for payment confirmation.
+    DISPATCHED
 }

@@ -1,6 +1,7 @@
 package com.readmoree.security;
 
 import java.io.IOException;
+import java.util.Enumeration;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -21,17 +22,24 @@ public class JwtFilter extends OncePerRequestFilter {
 	public void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
 		String path = request.getRequestURI();
+		System.out.println("Request URI: "+path);
+	
+		Enumeration<String> headerNames = request.getHeaderNames();
+		while (headerNames.hasMoreElements()) {
+		    String headerName = headerNames.nextElement();
+		    String headerValue = request.getHeader(headerName);
+		    System.out.println("Header: " + headerName + " = " + headerValue);
+		}
 		
 		// 1. Check authorization header from incoming request
 		String authHeader=request.getHeader("Authorization");
-		System.out.println(authHeader);
 
 		 if (path.startsWith("/swagger-ui/") || path.startsWith("/v3/api-docs")) {
 	            filterChain.doFilter(request, response);
 	            return;
 	        }
 		
-		System.out.println("jwt filter: "+ authHeader);
+		System.out.println("inside jwt filter: "+ authHeader);
 		
 		if (authHeader == null || !authHeader.startsWith("Bearer ")) {
 			System.out.println("token invalid");

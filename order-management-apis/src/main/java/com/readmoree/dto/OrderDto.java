@@ -15,6 +15,7 @@ import lombok.Setter;
 public class OrderDto {
 	
 	private Long bookId;
+	private String image;
 	private Integer quantity;
 	private Double price;
 	private String orderId;
@@ -47,12 +48,12 @@ public class OrderDto {
 		this.orderStatus = orderStatus;
 		this.orderTotal = orderTotal;
 	}
+	
+	
 
-	//"od.bookId, od.price, od.quantity, o.orderId, o.trackingId, "+
-    //"o.orderDate, o.orderStatus, o.orderTotal, p.paymentId, p.paymentMethod, p.paymentStatus)
-
-	public OrderDto(Long bookId,Double price,Integer quantity,String orderId,Long trackingId,LocalDateTime orderDate, OrderStatus orderStatus,Double orderTotal  
+	public OrderDto(String bookName, Long bookId,Double price,Integer quantity,String orderId,Long trackingId,LocalDateTime orderDate, OrderStatus orderStatus,Double orderTotal  
 			, Long paymentId, String paymentMethod, PaymentStatus paymentStatus) {
+		this.bookName = bookName;
 		this.bookId = bookId;
 		this.price = price;
 		this.quantity = quantity;
@@ -64,6 +65,39 @@ public class OrderDto {
 		this.orderDate = orderDate;
 		this.orderStatus = orderStatus;
 		this.orderTotal = orderTotal;
+	}
+	
+	public OrderDto(Long bookId,Double price,Integer quantity,String orderId,Integer addressId,Long trackingId,LocalDateTime orderDate, OrderStatus orderStatus,Double orderTotal  
+			, Long paymentId, String paymentMethod, PaymentStatus paymentStatus) {
+		this.bookId = bookId;
+		this.price = price;
+		this.quantity = quantity;
+		this.orderId = orderId;
+		this.paymentId = paymentId;
+		this.addressId = addressId;
+		this.paymentMethod = paymentMethod;
+		this.paymentStatus = paymentStatus;
+		this.trackingId = trackingId;
+		this.orderDate = orderDate;
+		this.orderStatus = orderStatus;
+		this.orderTotal = orderTotal;
+	}
+
+	public OrderDto(String bookName, Double price, Integer quantity, String orderId, Long trackingId,
+			LocalDateTime orderDate, OrderStatus orderStatus, Double orderTotal, Long paymentId,
+			String paymentMethod, PaymentStatus paymentStatus) {
+		this.bookName = bookName;
+		this.quantity = quantity;
+		this.price = price;
+		this.orderId = orderId;
+		this.paymentId = paymentId;
+		this.paymentMethod = paymentMethod;
+		this.paymentStatus = paymentStatus;
+		this.trackingId = trackingId;
+		this.orderDate = orderDate;
+		this.orderStatus = orderStatus;
+		this.orderTotal = orderTotal;
+	
 	}
 
 

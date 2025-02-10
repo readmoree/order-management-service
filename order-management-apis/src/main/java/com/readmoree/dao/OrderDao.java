@@ -12,8 +12,8 @@ import java.util.List;
 public interface OrderDao extends JpaRepository<Order, String> {
 	List<Order> findByCustomerId(Long customerId);
 
-	@Query("SELECT new com.readmoree.dto.OrderDto( " +
-			"od.bookId, od.price, od.quantity, o.orderId, " +
+	@Query("SELECT new com.readmoree.dto.OrderDto(" +
+			"od.bookId, od.price, od.quantity, o.orderId, o.addressId, " +
 			"o.trackingId, o.orderDate, o.orderStatus, o.orderTotal, " +
 			"p.paymentId, p.paymentMethod, p.paymentStatus ) " + // Extract payment fields separately
 			"FROM OrderDetails od " +

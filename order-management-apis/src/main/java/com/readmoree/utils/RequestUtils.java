@@ -11,8 +11,8 @@ import com.readmoree.dto.BookResponseDto;
 
 public class RequestUtils {
 
-	public static  String requestBookService(Long bookId) {
-		final String URl = "http://localhost:8080/book/public/order/"+bookId;
+	public static  BookResponseDto requestBookService(Long bookId) {
+		final String URl = "http://localhost:8080/book/public/details/"+bookId;
 		BookResponseDto book=new BookResponseDto();
 		try { 
 			HttpClient client = HttpClient.newHttpClient();
@@ -29,14 +29,15 @@ public class RequestUtils {
 
 			if (response.statusCode() != 200) {
 				System.err.println("Error: Received HTTP " + response.statusCode());
-				return "Error: " + response.body(); // Return error response instead of parsing
+				System.err.println("Error: "+response.body());
+				//return "Error: " + response.body(); // Return error response instead of parsing
 			}
 			book = (BookResponseDto) (objectMapper.readValue(response.body(), BookResponseDto.class));
 
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
-		return book.getTitle();
+		return book;
 	}
 
 }

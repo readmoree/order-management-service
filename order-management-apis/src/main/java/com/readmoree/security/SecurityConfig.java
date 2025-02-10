@@ -35,7 +35,7 @@ public class SecurityConfig {
                 "/v3/api-docs/**",
                 "/swagger-ui.html",
 				"/v*/api-doc*/**","/swagger-ui/**").permitAll()
-       .requestMatchers("/orders/placeOrder/**","/orders/cancel/**","/orders/return/**","/orders/echange/**","/orders/list/**")
+       .requestMatchers("/orders/placeOrder/**","/orders/cancel/**","/orders/return/**","/orders/exchange/**","/orders/list/**")
        .hasRole("CUSTOMER")
        .requestMatchers("/admin/**")
        .hasRole("ADMIN")        		
@@ -50,13 +50,15 @@ public class SecurityConfig {
 	}
 	 @Bean
 	 public CorsConfigurationSource corsConfigurationSource() {
+		  
 		 UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 		    CorsConfiguration config = new CorsConfiguration();
 
 		    config.setAllowedOrigins(List.of("http://localhost:3000")); // Set allowed origins
-		    config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+		    config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
 		    config.setAllowedHeaders(List.of("Authorization", "Content-Type"));
 		    config.setAllowCredentials(true); // Important for cookies
+		    config.addExposedHeader("Authorization");
 
 		    source.registerCorsConfiguration("/**", config);
 		    

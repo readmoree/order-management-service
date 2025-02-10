@@ -18,6 +18,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class Payment {
+	
 	@Id
 	@Column(name="payment_id")
 	private Long paymentId;
@@ -51,9 +52,10 @@ public class Payment {
 		case "Pay on delivery":{
 			return PaymentStatus.PENDING;
 		}
-		case "Debit/Credit Card":
+		case "DEBIT CARD":
+		case "CREDIT CARD":
 		case "UPI":
-		case "Net banking":{
+		case "NET BANKING":{
 			if(paymentId != null) {
 				return PaymentStatus.PAID;
 			}else {
