@@ -9,10 +9,10 @@
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.readmoree</groupId>
-	<artifactId>spring_boot_backend_template</artifactId>
+	<artifactId>order-management-service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>spring_boot_backend_template</name>
-	<description>Spring boot backend template with Spring Boot 3.x JDK 17</description>
+	<name>order-management-service</name>
+	<description>Order-management-service-of-ReadMoree</description>
 	<url />
 	<licenses>
 		<license />
@@ -137,5 +137,6 @@
 					</configuration>
 				</plugin>
 			</plugins>
+			<finalName>Order-management-service</finalName>
 		</build>
 </project>
