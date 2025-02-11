@@ -13,7 +13,6 @@ RUN mvn dependency:go-offline
 COPY src src
 COPY mvnw .
 COPY mvnw.cmd .
-COPY .mvn .mvn
 
 # Build the application (skipping tests for faster deployment)
 RUN ./mvnw clean package -DskipTests
@@ -26,6 +25,6 @@ WORKDIR /app
 # Copy the built JAR file from the first stage
 COPY --from=build /app/target/Order-management-service.jar Order-management-service.jar
 
-EXPOSE 8080
+EXPOSE 8081
 
 ENTRYPOINT ["java", "-jar", "Order-management-service.jar"]
