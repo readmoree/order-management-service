@@ -11,11 +11,9 @@ RUN mvn dependency:go-offline
 
 # Copy the rest of the source code
 COPY src src
-COPY mvnw .
-COPY mvnw.cmd .
 
 # Build the application (skipping tests for faster deployment)
-RUN ./mvnw clean package -DskipTests
+RUN mvn clean package -DskipTests
 
 # Second stage: Run the application
 FROM openjdk:17-jdk-slim
